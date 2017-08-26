@@ -56,7 +56,7 @@ func (self *MockRemoteNode) AppendEntries(
 
 func TestCreateLocalNode(t *testing.T) {
 	nodeId := uint64(1)
-	node := r2aft.New(nodeId)
+	node := r2aft.NewNode(nodeId)
 	if node.Id() != nodeId {
 		t.Fail()
 	}
@@ -67,7 +67,7 @@ func TestCreateLocalNode(t *testing.T) {
 }
 
 func TestBecomingCandidate(t *testing.T) {
-	node        := r2aft.New(3)
+	node        := r2aft.NewNode(3)
 	remoteNode1 := NewMockRemoteNode(1)
 	remoteNode2 := NewMockRemoteNode(2)
 
@@ -102,7 +102,7 @@ func TestBecomingCandidate(t *testing.T) {
 }
 
 func TestBecomingFollower(t *testing.T) {
-	node        := r2aft.New(3)
+	node        := r2aft.NewNode(3)
 	remoteNode1 := NewMockRemoteNode(1)
 	remoteNode2 := NewMockRemoteNode(2)
 
@@ -142,7 +142,7 @@ func TestBecomingFollower(t *testing.T) {
 }
 
 func TestBecomingLeader(t *testing.T) {
-	node        := r2aft.New(3)
+	node        := r2aft.NewNode(3)
 	remoteNode1 := NewMockRemoteNode(1)
 	remoteNode2 := NewMockRemoteNode(2)
 
@@ -191,7 +191,7 @@ func TestBecomingLeader(t *testing.T) {
 }
 
 func TestBecomingGrantOneVote(t *testing.T) {
-	node        := r2aft.New(3)
+	node        := r2aft.NewNode(3)
 	remoteNode1 := NewMockRemoteNode(1)
 	remoteNode2 := NewMockRemoteNode(2)
 

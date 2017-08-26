@@ -27,7 +27,7 @@ type Node struct {
 	remoteNodes []RemoteNode
 }
 
-func New(id uint64) Node {
+func NewNode(id uint64) Node {
 	return Node {
 		id: id,
 		state: Follower,
