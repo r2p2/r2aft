@@ -123,7 +123,11 @@ func (self *LocalNode) AppendEntriesReply(
 	term uint64,
 	err error,
 ) {
-
+	if term > self.currentTerm {
+		self.currentTerm = term
+		self.state = Follower
+		self.votedFor = 0
+	}
 }
 
 func (self *LocalNode) Timeout() {
