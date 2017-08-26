@@ -4,6 +4,7 @@ type RemoteNode struct {
 	id uint64
 	nextIndex []uint64
 	matchIndex []uint64
+	localNode LocalNode
 }
 
 func (self *RemoteNode) Id() uint64 {
@@ -15,8 +16,7 @@ func (self *RemoteNode) RequestVote(
 	candidateId uint64,
 	lastLogIndex uint64,
 	lastLogTerm uint64,
-) (uint64, error) {
-	return 0, nil
+) {
 }
 
 func (self *RemoteNode) AppendEntries(
@@ -26,6 +26,5 @@ func (self *RemoteNode) AppendEntries(
 	prevLogTerm uint64,
 	entries []Entry,
 	leaderCommit uint64,
-) (uint64, error) {
-	return 0, nil
+) {
 }
