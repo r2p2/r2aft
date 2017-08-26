@@ -1,17 +1,17 @@
 package r2aft
 
-type RemoteNode struct {
+type RemoteTcpNode struct {
 	id uint64
 	nextIndex []uint64
 	matchIndex []uint64
 	localNode LocalNode
 }
 
-func (self *RemoteNode) Id() uint64 {
+func (self *RemoteTcpNode) Id() uint64 {
 	return self.id
 }
 
-func (self *RemoteNode) RequestVote(
+func (self *RemoteTcpNode) RequestVote(
 	term uint64,
 	candidateId uint64,
 	lastLogIndex uint64,
@@ -19,7 +19,7 @@ func (self *RemoteNode) RequestVote(
 ) {
 }
 
-func (self *RemoteNode) AppendEntries(
+func (self *RemoteTcpNode) AppendEntries(
 	term uint64,
 	leaderId uint64,
 	prevLogIndex uint64,

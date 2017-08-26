@@ -9,7 +9,7 @@ const (
 	Leader
 )
 
-type LocalNode struct {
+type Node struct {
 	id uint64
 	state State
 
@@ -24,11 +24,11 @@ type LocalNode struct {
 	lastApplied uint64
 
 	// volatile on leaders; reinit after election
-	remoteNodes []RNode
+	remoteNodes []RemoteNode
 }
 
-func New(id uint64) LocalNode {
-	return LocalNode {
+func New(id uint64) Node {
+	return Node {
 		id: id,
 		state: Follower,
 		currentTerm: 0,
@@ -37,23 +37,23 @@ func New(id uint64) LocalNode {
 		log: make([]Entry, 0, 100),
 		commitIndex: 0,
 		lastApplied: 0,
-		remoteNodes: make([]RNode, 0, 10),
+		remoteNodes: make([]RemoteNode, 0, 10),
 	}
 }
 
-func (self *LocalNode) Add(remoteNode RNode) {
+func (self *Node) Add(remoteNode RemoteNode) {
 	self.remoteNodes = append(self.remoteNodes, remoteNode)
 }
 
-func (self *LocalNode) State() State {
+func (self *Node) State() State {
 	return self.state
 }
 
-func (self *LocalNode) Id() uint64 {
+func (self *Node) Id() uint64 {
 	return self.id
 }
 
-func (self *LocalNode) RequestVote(
+func (self *Node) RequestVote(
 	term uint64,
 	candidateId uint64,
 	lastLogIndex uint64,
@@ -70,13 +70,13 @@ func (self *LocalNode) RequestVote(
 		return self.currentTerm, errors.New("did vote already")
 	}
 
-	// TODO LocalNode::RequestVote: Add log checks $5.2, $5.4
+	// TODO Node::RequestVote: Add log checks $5.2, $5.4
 
 	self.votedFor = candidateId
 	return self.currentTerm, nil
 }
 
-func (self *LocalNode) VoteReply(
+func (self *Node) VoteReply(
 	term uint64,
 	err error,
 ) {
@@ -94,7 +94,7 @@ func (self *LocalNode) VoteReply(
 	self.becomeLeader()
 }
 
-func (self *LocalNode) AppendEntries(
+func (self *Node) AppendEntries(
 	term uint64,
 	leaderId uint64,
 	prevLogIndex uint64,
@@ -106,9 +106,9 @@ func (self *LocalNode) AppendEntries(
 		return self.currentTerm, errors.New("term < current term")
 	}
 
-	// TODO LocalNode::AppendEntries impl check for $5.3
-	// TODO LocalNode::AppendEntries append entries not already in log
-	// TODO LocalNode::AppendEntries update leader commit
+	// TODO Node::AppendEntries impl check for $5.3
+	// TODO Node::AppendEntries append entries not already in log
+	// TODO Node::AppendEntries update leader commit
 
 
 	if term > self.currentTerm {
@@ -119,7 +119,7 @@ func (self *LocalNode) AppendEntries(
 	return self.currentTerm, nil
 }
 
-func (self *LocalNode) AppendEntriesReply(
+func (self *Node) AppendEntriesReply(
 	term uint64,
 	err error,
 ) {
@@ -130,7 +130,7 @@ func (self *LocalNode) AppendEntriesReply(
 	}
 }
 
-func (self *LocalNode) Timeout() {
+func (self *Node) Timeout() {
 	if self.state == Leader {
 		self.emitHeartbeat()
 		return
@@ -139,7 +139,7 @@ func (self *LocalNode) Timeout() {
 	self.startElection()
 }
 
-func (self *LocalNode) startElection() {
+func (self *Node) startElection() {
 	self.state = Candidate
 	self.currentTerm += 1
 	self.votesReceived = 0
@@ -159,12 +159,12 @@ func (self *LocalNode) startElection() {
 	}
 }
 
-func (self *LocalNode) becomeLeader() {
+func (self *Node) becomeLeader() {
 	self.state = Leader
 	self.emitHeartbeat()
 }
 
-func (self *LocalNode) emitHeartbeat() {
+func (self *Node) emitHeartbeat() {
 	var lastLogTerm uint64 = 0
 	if len(self.log) > 0 {
 		lastLogTerm = self.log[len(self.log)-1].Term()

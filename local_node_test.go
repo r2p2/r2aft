@@ -17,7 +17,7 @@ type MockRemoteNode struct {
 	leaderCommit uint64
 }
 
-func NewMockRemoteNode(id uint64) r2aft.RNode {
+func NewMockRemoteNode(id uint64) r2aft.RemoteNode {
 	return &MockRemoteNode {
 		id: id,
 	}

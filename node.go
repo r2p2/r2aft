@@ -1,6 +1,6 @@
 package r2aft
 
-type LNode interface {
+type LocalNode interface {
 	Id() uint64
 
 	RequestVote(
@@ -30,7 +30,7 @@ type LNode interface {
 	)
 }
 
-type RNode interface {
+type RemoteNode interface {
 	Id() uint64
 
 	RequestVote(
